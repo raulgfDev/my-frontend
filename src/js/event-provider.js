@@ -76,8 +76,9 @@ export const init = () => {
         renderStudents( await CRUD.getData('all') );
         exitDetailMode();
     });
-}
 
+    exitDetail.addEventListener('click', () => exitDetailMode());
+}
 
 //methods
 const enterDetailMode = () => {

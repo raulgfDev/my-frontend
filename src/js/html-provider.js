@@ -10,7 +10,6 @@ let fId = document.querySelector('#fId'),
     fPostCode = document.getElementById( 'fPostCode' ),
     spanTotalPrice = document.querySelector( '#total-price');
 
-
 function renderStudents( students ) {
     let render = "<tr><th>NAME</th><th>FIRSTNAME</th><th>AGE</th><th>COUNTRY</th></tr>";
     for( let i = 0; i < students.length; i++ ){
