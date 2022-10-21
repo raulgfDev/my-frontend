@@ -1,4 +1,4 @@
-import { getData } from './crud';
+import * as CRUD from './crud';
 
 let fId = document.querySelector('#fId'),
     fName = document.getElementById('fName'),
@@ -10,7 +10,8 @@ let fId = document.querySelector('#fId'),
     fPostCode = document.getElementById( 'fPostCode' ),
     spanTotalPrice = document.querySelector( '#total-price');
 
-function renderStudents( students ) {
+async function renderStudents() {
+    const students = await CRUD.getData( 'all' );
     let render = "<tr><th>NAME</th><th>FIRSTNAME</th><th>AGE</th><th>COUNTRY</th></tr>";
     for( let i = 0; i < students.length; i++ ){
         render += `<tr><td>${ students[i].name }</td>
@@ -22,7 +23,8 @@ function renderStudents( students ) {
     document.getElementById("myTable").innerHTML = render;
 }
 
-const renderSubjects = ( subjects ) => {
+const renderSubjects = async() => {
+    const subjects = await CRUD.getData( 'subjects' );
     let render = '';
     for (let subject of subjects) {
         render += `<input class="subjects" type="checkbox" value="${ subject.id }" id="${ subject.name }">
@@ -31,7 +33,8 @@ const renderSubjects = ( subjects ) => {
     document.getElementById( 'subjects').innerHTML = render;
 }
 
-const renderCountries = ( countries ) => {
+const renderCountries = async() => {
+    const countries = await CRUD.getData ( 'countries' );
     let render = '';
     for (let country of countries) {
         render += `<option value="${ country.id }">${ country.name }</option>`
@@ -39,10 +42,10 @@ const renderCountries = ( countries ) => {
     document.getElementById( 'fCountry' ).innerHTML = render;
 }
 
-const renderPage = async () => {
-    renderStudents( await getData( 'all' ) );
-    renderCountries( await getData( 'countries' ) );
-    renderSubjects( await getData( 'subjects' ) );
+const renderPage = () => {
+    renderStudents();
+    renderCountries();
+    renderSubjects();
 }
 
 const createFormStudent = () => {

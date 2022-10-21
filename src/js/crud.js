@@ -1,5 +1,5 @@
 
-const endPoint = 'http://localhost:8080/api';
+const endPoint = 'https://my-backend-rgfdev.herokuapp.com/api/';
 
 const getData = async ( typeData ) => {
     try {

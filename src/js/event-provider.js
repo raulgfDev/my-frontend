@@ -1,7 +1,7 @@
 import { renderStudents, updateFormStudent, renderPage, createFormStudent } from './html-provider';
 import * as CRUD from './crud';
 
-const endPoint = "http://localhost:8080/api";
+const endPoint = "https://my-backend-rgfdev.herokuapp.com/api";
 
 const btnSearch = document.querySelector('#btnSearch'),
     btnCreate = document.getElementById("createStudent"),
@@ -16,71 +16,11 @@ const btnSearch = document.querySelector('#btnSearch'),
 let ageSearch = document.getElementById('ageIn'),
     spanTotalPrice = document.querySelector( '#total-price');
 
-const form = document.getElementById('miForm'),
-    inputs = document.getElementsByClassName('input-form');
+const form   = document.getElementById('miForm'),
+      inputs = document.getElementsByClassName('input-form');
 let fId = document.querySelector('#fId');
 
-export const init = () => {
-
-    window.addEventListener('load',  () =>  renderPage() );
-
-    btnCreate.addEventListener('click', async () => {
-        await CRUD.saveStudent( createFormStudent() );
-        renderStudents( await CRUD.getData( 'all') );
-        form.reset();
-    });
-
-    btnSearch.addEventListener('click', () => {
-        //without async-await
-        fetch(`${ endPoint }/age/${ ageSearch.value }`)
-            .then( response => {
-                console.log( response.status );
-                form.reset();
-                if ( response.status === 404 ) {
-                    ageSearch.value = '';
-                    alert( 'There are not students with the request age');
-                    return
-                }
-                return response.json()
-            })
-            .then( json =>  renderStudents( json ) )
-            .catch( err => console.log( err.error ));
-    });
-
-    //event delegation = https://roelmagdaleno.com/agrega-un-evento-en-multiples-elementos-con-event-delegation/
-    document.addEventListener('click',async ( event) => {
-        const clickedBtn = event.target;
-        if ( !clickedBtn.matches('.btnDetail') ) return;
-        enterDetailMode();
-        await updateFormStudent( await CRUD.getStudentById( clickedBtn.value ) );
-    });
-
-    btnAll.addEventListener( 'click', async () => {
-        renderStudents( await CRUD.getData('all') );
-        ageSearch.value = '';
-    });
-
-    btnUpdate.addEventListener('click', async () => {
-        if ( !confirm('Are you sure UPDATE this student?') ) return;
-        const changeStudent = createFormStudent();
-        const student = await CRUD.updateStudent( changeStudent );
-        if ( student ) {
-            renderStudents( await CRUD.getData( 'all') );
-            exitDetailMode()
-        }
-    });
-
-    btnDelete.addEventListener('click', async () => {
-        if ( !confirm('Are you sure DELETE this student?') ) return
-        await CRUD.deleteStudent( fId.value );
-        renderStudents( await CRUD.getData('all') );
-        exitDetailMode();
-    });
-
-    exitDetail.addEventListener('click', () => exitDetailMode());
-}
-
-//methods
+//methods for events
 const enterDetailMode = () => {
     form.reset();
     fieldSet.style.borderColor = 'red';
@@ -113,3 +53,83 @@ const exitDetailMode = () => {
     ageSearch.disabled = false;
     spanTotalPrice.innerText = '';
 }
+
+//events
+const createStudent = () => {
+    btnCreate.addEventListener('click', async () => {
+        await CRUD.saveStudent( createFormStudent() );
+        renderStudents();
+        form.reset();
+    });
+}
+
+const searchByAge = () => {
+    btnSearch.addEventListener('click', () => {
+        //without async-await
+        fetch(`${ endPoint }/age/${ ageSearch.value }`)
+            .then( response => {
+                console.log( response.status );
+                form.reset();
+                if ( response.status === 404 ) {
+                    ageSearch.value = '';
+                    alert( 'There are not students with the request age');
+                    return
+                }
+                return response.json()
+            })
+            .then( json =>  renderStudents( json ) )
+            .catch( err => console.log( err.error ));
+    });
+}
+
+const detailStudent = () => {
+        //event delegation = https://roelmagdaleno.com/agrega-un-evento-en-multiples-elementos-con-event-delegation/
+        document.addEventListener('click',async ( event) => {
+            const clickedBtn = event.target;
+            if ( !clickedBtn.matches('.btnDetail') ) return;
+            enterDetailMode();
+            updateFormStudent( await CRUD.getStudentById( clickedBtn.value ) );
+        });
+}
+
+const showAllStudent = () => {
+        btnAll.addEventListener( 'click', async () => {
+        renderStudents( await CRUD.getData( 'all' ) );
+        ageSearch.value = '';
+    });
+}
+
+const updateStudent = () => {
+    btnUpdate.addEventListener('click', async () => {
+        if ( !confirm('Are you sure UPDATE this student?') ) return;
+        const changeStudent = createFormStudent();
+        const student = await CRUD.updateStudent( changeStudent );
+        if ( student ) {
+            renderStudents( await CRUD.getData( 'all') );
+            exitDetailMode()
+        }
+    });
+}
+
+const deleteStudent = () => {
+    btnDelete.addEventListener('click', async () => {
+        if ( !confirm('Are you sure DELETE this student?') ) return
+        await CRUD.deleteStudent( fId.value );
+        renderStudents( await CRUD.getData('all') );
+        exitDetailMode();
+    });
+}
+
+export const init = () => {
+
+    window.addEventListener('load',  () =>  renderPage() );
+    createStudent();
+    searchByAge();
+    detailStudent();
+    showAllStudent();
+    updateStudent();
+    deleteStudent();
+    exitDetail.addEventListener('click', () => exitDetailMode());
+}
+
+
