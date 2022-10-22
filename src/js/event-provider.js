@@ -57,7 +57,7 @@ const exitDetailMode = () => {
 //events
 const createStudent = () => {
     btnCreate.addEventListener('click', async () => {
-        if (!confirm( 'Are you sure create this student')) return;
+        if ( !confirm( 'Are you sure CREATE this student') ) return;
         await CRUD.saveStudent( createFormStudent() );
         await renderStudents();
         form.reset();
@@ -114,7 +114,7 @@ const updateStudent = () => {
 
 const deleteStudent = () => {
     btnDelete.addEventListener('click', async () => {
-        if ( !confirm('Are you sure DELETE this student?') ) return
+        if ( !confirm('Are you sure DELETE this student?') ) return;
         await CRUD.deleteStudent( fId.value );
         await renderStudents( await CRUD.getData('all') );
         exitDetailMode();
