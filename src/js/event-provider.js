@@ -57,8 +57,9 @@ const exitDetailMode = () => {
 //events
 const createStudent = () => {
     btnCreate.addEventListener('click', async () => {
+        if (!confirm( 'Are you sure create this student')) return;
         await CRUD.saveStudent( createFormStudent() );
-        renderStudents();
+        await renderStudents();
         form.reset();
     });
 }
@@ -94,7 +95,7 @@ const detailStudent = () => {
 
 const showAllStudent = () => {
         btnAll.addEventListener( 'click', async () => {
-        renderStudents( await CRUD.getData( 'all' ) );
+        await renderStudents();
         ageSearch.value = '';
     });
 }
@@ -105,7 +106,7 @@ const updateStudent = () => {
         const changeStudent = createFormStudent();
         const student = await CRUD.updateStudent( changeStudent );
         if ( student ) {
-            renderStudents( await CRUD.getData( 'all') );
+            await renderStudents();
             exitDetailMode()
         }
     });
@@ -115,7 +116,7 @@ const deleteStudent = () => {
     btnDelete.addEventListener('click', async () => {
         if ( !confirm('Are you sure DELETE this student?') ) return
         await CRUD.deleteStudent( fId.value );
-        renderStudents( await CRUD.getData('all') );
+        await renderStudents( await CRUD.getData('all') );
         exitDetailMode();
     });
 }

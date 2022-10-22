@@ -42,10 +42,10 @@ const renderCountries = async() => {
     document.getElementById( 'fCountry' ).innerHTML = render;
 }
 
-const renderPage = () => {
-    renderStudents();
-    renderCountries();
-    renderSubjects();
+const renderPage = async () => {
+    await renderStudents();
+    await renderCountries();
+    await renderSubjects();
 }
 
 const createFormStudent = () => {

@@ -11,15 +11,19 @@ const getData = async ( typeData ) => {
 }
 
 async function saveStudent ( student ) {
-    const response = await fetch(endPoint + '/save', {
-        method: 'POST',
-        body: JSON.stringify( student ),
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8'
-        }
-    });
-    console.log( response.status );
-    return await response.json();
+    try {
+        const response = await fetch(endPoint + '/save', {
+            method: 'POST',
+            body: JSON.stringify( student ),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8'
+            }
+        });
+        console.log( response.status );
+
+    } catch ( err ) {
+        throw err;
+    }
 }
 
 const deleteStudent = async ( idStudent ) => {
