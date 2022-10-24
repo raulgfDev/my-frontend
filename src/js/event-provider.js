@@ -1,8 +1,6 @@
 import { renderStudents, updateFormStudent, renderPage, createFormStudent } from './html-provider';
 import * as CRUD from './crud';
 
-const endPoint = "https://my-backend-rgfdev.herokuapp.com/api";
-
 const btnSearch = document.querySelector('#btnSearch'),
     btnCreate = document.getElementById("createStudent"),
     btnAll = document.querySelector('#btnAll'),
@@ -59,27 +57,20 @@ const createStudent = () => {
     btnCreate.addEventListener('click', async () => {
         if ( !confirm( 'Are you sure CREATE this student') ) return;
         await CRUD.saveStudent( createFormStudent() );
-        await renderStudents();
+        renderStudents( await CRUD.getData( 'all' ));
         form.reset();
     });
 }
 
 const searchByAge = () => {
-    btnSearch.addEventListener('click', () => {
-        //without async-await
-        fetch(`${ endPoint }/age/${ ageSearch.value }`)
-            .then( response => {
-                console.log( response.status );
-                form.reset();
-                if ( response.status === 404 ) {
-                    ageSearch.value = '';
-                    alert( 'There are not students with the request age');
-                    return
-                }
-                return response.json()
-            })
-            .then( json =>  renderStudents( json ) )
-            .catch( err => console.log( err.error ));
+    btnSearch.addEventListener('click', async () => {
+        const response = await CRUD.getStudentsByAge( ageSearch.value );
+        if ( response.status === 404 ){
+            renderStudents( await CRUD.getData( 'all' ));
+            ageSearch.value = '';
+            return  alert( 'There are not students with this age' );
+        }
+        renderStudents( await response.json() );
     });
 }
 
@@ -95,7 +86,7 @@ const detailStudent = () => {
 
 const showAllStudent = () => {
         btnAll.addEventListener( 'click', async () => {
-        await renderStudents();
+        renderStudents( await CRUD.getData( 'all' ));
         ageSearch.value = '';
     });
 }
@@ -106,7 +97,7 @@ const updateStudent = () => {
         const changeStudent = createFormStudent();
         const student = await CRUD.updateStudent( changeStudent );
         if ( student ) {
-            await renderStudents();
+            renderStudents( await CRUD.getData( 'all' ));
             exitDetailMode()
         }
     });
@@ -116,7 +107,7 @@ const deleteStudent = () => {
     btnDelete.addEventListener('click', async () => {
         if ( !confirm('Are you sure DELETE this student?') ) return;
         await CRUD.deleteStudent( fId.value );
-        await renderStudents( await CRUD.getData('all') );
+        renderStudents( await CRUD.getData( 'all' ));
         exitDetailMode();
     });
 }

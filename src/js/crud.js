@@ -1,7 +1,13 @@
-
-const endPoint = 'https://my-backend-rgfdev.herokuapp.com/api/';
+//definir variable de entorno
+let endPoint = '';
+if (window.location.hostname === 'localhost' ) {
+    endPoint = 'http://localhost:8080/api';
+} else {
+    endPoint = 'https://my-backend-rgfdev.herokuapp.com/api';
+}
 
 const getData = async ( typeData ) => {
+    console.log( endPoint );
     try {
         const response = await fetch( `${ endPoint }/${ typeData }`);
         return await response.json();
@@ -64,12 +70,22 @@ const getStudentById = async ( id ) => {
     }
 }
 
+const getStudentsByAge = async ( age ) => {
+    try {
+        const response = await fetch( `${ endPoint }/age/${ age }`);
+        return await response;
+    } catch ( err ) {
+        console.log( err );
+    }
+}
+
 export {
     getData,
     saveStudent,
     deleteStudent,
     updateStudent,
-    getStudentById
+    getStudentById,
+    getStudentsByAge
 }
 
 

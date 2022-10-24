@@ -10,8 +10,8 @@ let fId = document.querySelector('#fId'),
     fPostCode = document.getElementById( 'fPostCode' ),
     spanTotalPrice = document.querySelector( '#total-price');
 
-async function renderStudents() {
-    const students = await CRUD.getData( 'all' );
+function renderStudents( students ) {
+
     let render = "<tr><th>NAME</th><th>FIRSTNAME</th><th>AGE</th><th>COUNTRY</th></tr>";
     for( let i = 0; i < students.length; i++ ){
         render += `<tr><td>${ students[i].name }</td>
@@ -43,7 +43,7 @@ const renderCountries = async() => {
 }
 
 const renderPage = async () => {
-    await renderStudents();
+    await renderStudents( await CRUD.getData( 'all' ));
     await renderCountries();
     await renderSubjects();
 }
