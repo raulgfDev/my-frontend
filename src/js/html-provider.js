@@ -8,7 +8,9 @@ let fId = document.querySelector('#fId'),
     fCountry = document.getElementById( 'fCountry' ),
     fSubjects = document.getElementsByClassName( 'subjects' ),
     fPostCode = document.getElementById( 'fPostCode' ),
-    spanTotalPrice = document.querySelector( '#total-price');
+    spanTotalPrice = document.querySelector( '#total-price'),
+
+    viewLogs = document.querySelector( '#view-logs' );
 
 function renderStudents( students ) {
 
@@ -89,10 +91,21 @@ const updateFormStudent =  ( student ) => {
         `Total Price of Subjects ${ student.totalPriceSubjects } €.`;
 }
 
+const renderLogs = async () => {
+    const logs = await CRUD.getLogs();
+    let render = '<ul>';
+    for ( let log of logs ) {
+        render += `<li>${ log.nameMethod } ${ log.timeMethod } ${ log.fecha } ${ log.review }</li>`
+    }
+    render += '</ul>'
+    viewLogs.innerHTML = render;
+}
+
 export {
     renderStudents,
     renderPage,
     createFormStudent,
-    updateFormStudent
+    updateFormStudent,
+    renderLogs
 }
 
