@@ -9,8 +9,8 @@ let fId = document.querySelector('#fId'),
     fSubjects = document.getElementsByClassName( 'subjects' ),
     fPostCode = document.getElementById( 'fPostCode' ),
     spanTotalPrice = document.querySelector( '#total-price'),
-
-    viewLogs = document.querySelector( '#view-logs' );
+    viewLogs = document.querySelector( '#view-logs' ),
+    viewValues = document.querySelector('#view-values');
 
 function renderStudents( students ) {
 
@@ -110,12 +110,26 @@ const deleteLogs = () => {
     viewLogs.innerHTML = '';
 }
 
+const renderValues = async () => {
+    const values = await CRUD.getData( 'values')
+    let render = '<tr><th>ID</th><th>CLOSE</th><th>DATE</th><th>EXCHANGE</th><th>SYMBOL</th></tr>';
+    for ( let value of values ) {
+        render += `<tr><td>${ value.id }</td>
+            <td>${ value.close }</td>
+            <td>${ value.date }</td>
+            <td>${ value.exchange }</td>
+            <td>${ value.symbol }</td></tr>`
+    }
+    viewValues.innerHTML = render;
+}
+
 export {
     renderStudents,
     renderPage,
     createFormStudent,
     updateFormStudent,
     renderLogs,
-    deleteLogs
+    deleteLogs,
+    renderValues
 }
 

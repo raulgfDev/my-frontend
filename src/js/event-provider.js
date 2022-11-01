@@ -3,7 +3,8 @@ import {renderStudents,
         renderPage,
         createFormStudent,
         renderLogs,
-        deleteLogs}
+        deleteLogs,
+        renderValues}
     from './html-provider';
 import * as CRUD from './crud';
 
@@ -14,6 +15,7 @@ const btnSearch = document.querySelector('#btnSearch'),
     btnDelete = document.querySelector('#btn-delete'),
     btnShowLogs = document.querySelector( '#show-logs' ),
     btnHideLogs = document.querySelector( '#hide-logs' ),
+    btnShowValues = document.querySelector('#show-values'),
 
     exitDetail = document.querySelector('#exit-detail'),
     fieldSet = document.querySelector('#field-set'),
@@ -132,6 +134,12 @@ const hideLogs = () => {
     });
 }
 
+const showValues = () => {
+    btnShowValues.addEventListener( 'click', () => {
+       renderValues();
+    });
+}
+
 export const init = () => {
 
     window.addEventListener('load',  () =>  renderPage() );
@@ -143,6 +151,7 @@ export const init = () => {
     deleteStudent();
     showLogs();
     hideLogs();
+    showValues();
     exitDetail.addEventListener('click', () => exitDetailMode());
 }
 
