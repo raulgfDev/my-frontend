@@ -92,13 +92,22 @@ const updateFormStudent =  ( student ) => {
 }
 
 const renderLogs = async () => {
-    const logs = await CRUD.getLogs();
-    let render = '<ul>';
+
+    const logs = await CRUD.getData( 'getLogs' );
+    let render = '<tr><th>ID</th><th>NAME</th><th>TIME</th><th>DATE</th><th>REVIEW</th></tr>';
     for ( let log of logs ) {
-        render += `<li>${ log.nameMethod } ${ log.timeMethod } ${ log.fecha } ${ log.review }</li>`
+        render += `<tr class="${ (log.review ) ? 'red' : '' }">
+            <td>${ log.id }</td>
+            <td>${ log.nameMethod }</td>
+            <td>${ log.timeMethod }</td>
+            <td>${ log.fecha }</td>
+            <td>${ log.review }</td></tr>`
     }
-    render += '</ul>'
     viewLogs.innerHTML = render;
+}
+
+const deleteLogs = () => {
+    viewLogs.innerHTML = '';
 }
 
 export {
@@ -106,6 +115,7 @@ export {
     renderPage,
     createFormStudent,
     updateFormStudent,
-    renderLogs
+    renderLogs,
+    deleteLogs
 }
 

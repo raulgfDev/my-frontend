@@ -79,14 +79,6 @@ const getStudentsByAge = async ( age ) => {
     }
 }
 
-const getLogs = async () => {
-    try {
-        const response = await fetch( `${ endPoint }/getLogs`);
-        return await response.json();
-    } catch ( error ) {
-        console.log( error );
-    }
-}
 
 export {
     getData,
@@ -95,7 +87,6 @@ export {
     updateStudent,
     getStudentById,
     getStudentsByAge,
-    getLogs
 }
 
 

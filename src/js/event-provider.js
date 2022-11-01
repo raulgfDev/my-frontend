@@ -1,4 +1,10 @@
-import {renderStudents, updateFormStudent, renderPage, createFormStudent, renderLogs} from './html-provider';
+import {renderStudents,
+        updateFormStudent,
+        renderPage,
+        createFormStudent,
+        renderLogs,
+        deleteLogs}
+    from './html-provider';
 import * as CRUD from './crud';
 
 const btnSearch = document.querySelector('#btnSearch'),
@@ -7,6 +13,7 @@ const btnSearch = document.querySelector('#btnSearch'),
     btnUpdate = document.querySelector('#btn-update'),
     btnDelete = document.querySelector('#btn-delete'),
     btnShowLogs = document.querySelector( '#show-logs' ),
+    btnHideLogs = document.querySelector( '#hide-logs' ),
 
     exitDetail = document.querySelector('#exit-detail'),
     fieldSet = document.querySelector('#field-set'),
@@ -119,6 +126,12 @@ const showLogs = () => {
     });
 }
 
+const hideLogs = () => {
+    btnHideLogs.addEventListener( 'click', () => {
+        deleteLogs();
+    });
+}
+
 export const init = () => {
 
     window.addEventListener('load',  () =>  renderPage() );
@@ -129,6 +142,7 @@ export const init = () => {
     updateStudent();
     deleteStudent();
     showLogs();
+    hideLogs();
     exitDetail.addEventListener('click', () => exitDetailMode());
 }
 
